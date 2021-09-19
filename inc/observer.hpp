@@ -10,6 +10,7 @@ namespace async {
 template <typename T> class i_observer {
 public:
   virtual void update(const T &command) = 0;
+  ~i_observer() = default;
 };
 
 template <typename T> class i_observable {
