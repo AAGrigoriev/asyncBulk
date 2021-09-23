@@ -16,4 +16,14 @@ std::vector<std::string> &command::get_command() const { return command_; }
 
 bool command::empty() const { return command_.empty(); }
 
+std::ostream &operator<<(std::ostream &a_osOut, const command &command) {
+  for (auto command_it = command.command_.begin();
+       command_it != command.command_.cend(); ++command_it) {
+    if (command_it != command.command_.begin()) {
+      a_osOut << ", ";
+    }
+    a_osOut << *command_it;
+  }
+  return a_osOut;
+}
 } // namespace async

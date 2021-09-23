@@ -19,6 +19,9 @@ protected:
 
 private:
   cout_writter(const std::string &worker_name);
+
+private:
+  std::mutex cout_mutex;
 };
 
 } // namespace asycn
