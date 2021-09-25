@@ -9,7 +9,7 @@ thread_raii::thread_raii(Func &&func, thread_action action)
     : action_(action), thread_(std::move(func)) {}
 
 template <typename Func, typename... Args>
-explicit thread_raii(Func &&f, Args &&...args, thread_action action)
+thread_raii::thread_raii(Func &&f, Args &&...args, thread_action action)
     : action_(action), thread_(std::move(f), std::forward<Args>(args)...) {}
 
 thread_raii::~thread_raii() {

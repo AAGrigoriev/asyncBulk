@@ -10,8 +10,8 @@ void worker::create_process() { workers_.emplace_back(&worker::process, this); }
 
 void worker::update(const command &command) {
   {
-    std::lock_guard<que_mutex_>;
-    command_.push__back(command);
+    std::lock_guard lc(que_mutex_);
+    command_.push(command);
   }
   cv_.notify_one();
 }

@@ -6,19 +6,19 @@
 #include "reader.hpp"
 #include "worker.hpp"
 
-namespace asycn {
+namespace async {
 
-class cout_writter final : public worker,
-                           public std::enable_shared_from_this<cout_writter> {
+class cout_writer final : public worker,
+                           public std::enable_shared_from_this<cout_writer> {
 public:
-  static std::shared_ptr<cout_writter> create(const std::string &worker_name,
+  static std::shared_ptr<cout_writer> create(const std::string &worker_name,
                                               std::shared_ptr<reader> &reader);
 
 protected:
   void process() override;
 
-private:
-  cout_writter(const std::string &worker_name);
+public:
+  cout_writer(const std::string &worker_name);
 
 private:
   std::mutex cout_mutex;

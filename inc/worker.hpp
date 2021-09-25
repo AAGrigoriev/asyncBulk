@@ -25,9 +25,9 @@ protected:
   std::mutex que_mutex_;
   std::condition_variable cv_;
   std::atomic<bool> done_;
+  std::string worker_name_;
 
 private:
-  std::string worker_name_;
   std::vector<thread_raii> workers_;
 };
 
