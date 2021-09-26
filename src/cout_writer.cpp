@@ -1,17 +1,24 @@
 #include "cout_writer.hpp"
-#include "utils.hpp"
+
+#include <thread>
+#include <iostream>
+
 
 namespace async {
 
-cout_writer::cout_writer(const std::string &worker_name)
-    : worker(worker_name) {}
-
-std::shared_ptr<cout_writer> cout_writer::create(const std::string &name,
-                                                 reader &reader) {
-  auto shared_writer = std::make_shared<cout_writer>(name);
+std::shared_ptr<cout_writer> cout_writer::create(const std::string& name, reader& reader) {
+  /// todo: Лучше использовать make_shared, но нужно геммороится из-за приватного конструктора.
+  auto shared_writer = std::shared_ptr<cout_writer>(new cout_writer(name));
   reader.subscribe(shared_writer);
   return shared_writer;
 }
+
+
+cout_writer::cout_writer(const std::string& worker_name)
+    : worker(worker_name) {
+  create_process();
+  }
+
 
 void cout_writer::process() {
   while (!done_) {
@@ -24,10 +31,23 @@ void cout_writer::process() {
     command_.pop();
     lk.unlock();
     {
-      std::lock_guard lock(cout_mutex);
+      std::lock_guard lock(cout_mutex_);
       std::cout << command_to_execute;
     }
   }
 }
 
+
+void cout_writer::create_process() {
+  threads_.emplace_back(&cout_writer::process, this);
+}
+
+
+cout_writer::~cout_writer() {
+  done_ = true;
+  cv_.notify_all();
+  for (auto&& thread : threads_) {
+    thread.join();
+  }
+}
 } // namespace async
