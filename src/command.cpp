@@ -10,9 +10,13 @@ void command::push_command(std::string &&command) {
   command_.push_back(std::move(command));
 }
 
-std::string &command::get_time() const { return time_; }
+void command::clear_command() {
+  command_.clear();
+}
 
-std::vector<std::string> &command::get_command() const { return command_; }
+const std::string &command::get_time() const { return time_; }
+
+const std::vector<std::string> &command::get_command() const { return command_; }
 
 bool command::empty() const { return command_.empty(); }
 

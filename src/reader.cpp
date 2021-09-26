@@ -66,7 +66,7 @@ void reader::nested(std::string &&token) {
 
 void reader::flush_command() {
   notify(command_);
-  command_.get_command().clear();
+  command_.clear_command();
 }
 
 } // namespace async

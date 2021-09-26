@@ -1,4 +1,4 @@
-#pragma once;
+#pragma once
 
 #include <thread>
 
@@ -9,10 +9,10 @@ public:
   enum thread_action { join, detach };
 
 public:
-  template <typename Func> thread_raii(Func &&f, thread_action action);
+  template <typename Func> thread_raii(Func &&f, thread_action action = join);
 
   template <typename Func, typename... Args>
-  explicit thread_raii(Func &&f, Args &&...args, thread_action action);
+  explicit thread_raii(Func &&f, Args &&...args, thread_action action = join);
 
   ~thread_raii();
 

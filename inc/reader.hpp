@@ -8,6 +8,7 @@
 
 namespace async {
 
+// TODO: Возможно нужно наследовать через enable_shared_from_this, для реализации разделяемого ресурса.
 class reader final : public i_observable<command> {
 public:
   reader(std::size_t command_size = 1);

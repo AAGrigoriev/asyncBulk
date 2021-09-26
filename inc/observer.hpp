@@ -15,7 +15,7 @@ public:
 
 template <typename T> class i_observable {
 public:
-  void subscribe(const std::shared_ptr<i_observer> &obs) {
+  void subscribe(const std::shared_ptr<i_observer<T>> &obs) {
     list_.push_back(obs);
   }
 
@@ -33,7 +33,7 @@ public:
   }
 
 private:
-  std::list<std::weak_ptr<i_observer>> list_;
+  std::list<std::weak_ptr<i_observer<T>>> list_;
 };
 
 } // namespace async

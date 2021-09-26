@@ -11,9 +11,11 @@ class command final {
 public:
   void push_command(std::string &&command);
 
-  std::string &get_time() const;
+  const std::string &get_time() const;
 
-  std::vector<std::string> &get_command() const;
+  const std::vector<std::string> &get_command() const;
+
+  void clear_command();
 
   bool empty() const;
 

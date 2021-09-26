@@ -1,14 +1,18 @@
 #include <fstream>
 #include <utility>
 
+#include "utils.hpp"
 #include "file_writer.hpp"
 
 namespace async {
 
-std::shared_ptr<file_writer> file_writer::create(const std::string &worker_name,
-                                                 std::shared_ptr<reader> &reader) {
-  auto shared_writer = std::make_shared<file_writer>(worker_name);
-  reader->subscribe(shared_writer);
+file_writer::file_writer(const std::string &worker_name)
+  : worker(worker_name) {}
+
+std::shared_ptr<file_writer> file_writer::create(const std::string &name,
+                                                 reader &reader) {
+  auto shared_writer = std::make_shared<file_writer>(name);
+  reader.subscribe(shared_writer);
   return shared_writer;
 }
 

@@ -1,9 +1,10 @@
 #include "cout_writer.hpp"
-#include "filesystem"
 #include "reader.hpp"
 
-int main(){
+int main() {
+  async::reader reader;
 
-
+  reader.run("bla bla {bla bla}");
+  
   return 0;
 }
