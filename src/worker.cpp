@@ -1,15 +1,16 @@
+#include <functional>
 #include <mutex>
 
 #include "worker.hpp"
+#include "thread_raii.hpp"
 
 namespace async {
 
 worker::worker(const std::string &worker_name) : worker_name_(worker_name) {}
 
-void worker::create_process() { 
-  
-  //workers_.emplace_back(&worker::process, this); 
-  }
+void worker::create_process() {
+  workers_.emplace_back(&worker::process, this); 
+}
 
 void worker::update(const command &command) {
   {

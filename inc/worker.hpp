@@ -10,15 +10,16 @@
 #include "thread_raii.hpp"
 
 namespace async {
+  
 class worker : public i_observer<command> {
 public:
   void create_process();
   void update(const command &command) override;
   virtual ~worker();
+  virtual void process() = 0;
 
 protected:
   worker(const std::string &name);
-  virtual void process() = 0;
 
 protected:
   std::queue<command> command_;

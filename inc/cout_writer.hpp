@@ -16,7 +16,6 @@ public:
   static std::shared_ptr<cout_writer> create(const std::string &worker_name,
                                              reader &reader);
 
-protected:
   void process() override;
 
 private:
