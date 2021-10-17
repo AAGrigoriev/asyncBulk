@@ -24,7 +24,7 @@ public:
 
 private:
   std::vector<std::string> command_;
-  std::string time_;
+  std::string              time_;
 };
 
 } // namespace async

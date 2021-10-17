@@ -30,8 +30,9 @@ void file_writer::process() {
     command_.pop();
     lk.unlock();
 
-    std::ofstream log(worker_name_, std::ios::out);
-    log << log_command;
+    std::ofstream log(worker_name_ + log_command.get_time(), std::ios::app);
+    log << log_command << std::endl;
+    log.close();
   }
 }
 

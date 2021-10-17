@@ -6,18 +6,18 @@
 
 namespace async {
 
-std::shared_ptr<cout_writer> cout_writer::create(const std::string& name, reader& reader) {
+std::shared_ptr<cout_writer> cout_writer::create(const std::string& name, reader& reader, std::ostream& stream) {
   /// todo: Лучше использовать make_shared, но нужно геммороится из-за приватного конструктора.
-  auto shared_writer = std::shared_ptr<cout_writer>(new cout_writer(name));
+  auto shared_writer = std::shared_ptr<cout_writer>(new cout_writer(name, stream));
   reader.subscribe(shared_writer);
   return shared_writer;
 }
 
 
-cout_writer::cout_writer(const std::string& worker_name)
-    : worker(worker_name) {
+cout_writer::cout_writer(const std::string& worker_name, std::ostream& stream)
+    : worker(worker_name), stream_(stream) {
   create_process();
-  }
+}
 
 
 void cout_writer::process() {
@@ -32,7 +32,7 @@ void cout_writer::process() {
     lk.unlock();
     {
       std::lock_guard lock(cout_mutex_);
-      std::cout << command_to_execute;
+      stream_ << command_to_execute << std::endl;
     }
   }
 }
