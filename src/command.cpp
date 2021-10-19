@@ -4,9 +4,8 @@
 namespace async {
 
 void command::push_command(std::string &&command) {
-  if (command_.size() > 0) {
-    std::chrono::system_clock::time_point time_stamp;
-    time_ = std::to_string(time_stamp.time_since_epoch().count());
+  if (command_.empty()) {
+    time_ = std::to_string(std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count());
   }
   command_.push_back(std::move(command));
 }

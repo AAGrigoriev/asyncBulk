@@ -6,20 +6,20 @@
 
 namespace async {
 
-std::shared_ptr<file_writer> file_writer::create(const std::string& name, reader& reader) {
-  auto shared_writer = std::shared_ptr<file_writer>(new file_writer(name));
+std::shared_ptr<file_writer> file_writer::create(const std::string& name, std::size_t start_worker_number, reader& reader) {
+  auto shared_writer = std::shared_ptr<file_writer>(new file_writer(name, start_worker_number));
   reader.subscribe(shared_writer);
   return shared_writer;
 }
 
 
-file_writer::file_writer(const std::string& worker_name)
-  : worker(worker_name) {
+file_writer::file_writer(const std::string& worker_name, std::size_t start_worker_number)
+  : worker(worker_name, start_worker_number) {
   create_process();
 }
 
 
-void file_writer::process() {
+void file_writer::process(std::size_t worker_number) {
   while(!done_) {
     std::unique_lock lk(que_mutex_);
     cv_.wait(lk, [&] { return !command_.empty() || done_; });
@@ -30,23 +30,9 @@ void file_writer::process() {
     command_.pop();
     lk.unlock();
 
-    std::ofstream log(worker_name_ + log_command.get_time(), std::ios::app);
+    std::ofstream log(worker_name_ + std::to_string(worker_number), std::ios::app);
     log << log_command << std::endl;
     log.close();
-  }
-}
-
-
-void file_writer::create_process() {
-  threads_.emplace_back(&file_writer::process, this);
-}
-
-
-file_writer::~file_writer() {
-  done_ = true;
-  cv_.notify_all();
-  for (auto&& thread : threads_) {
-    thread.join();
   }
 }
 } // namespace async

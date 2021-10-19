@@ -24,6 +24,7 @@ reader::reader(const std::size_t command_size)
 
 
 void reader::run(const std::string& data) {
+  state_f_ = &reader::plain;
   for (auto&& string : split_string(data, " ")) {
     state_f_(this, std::move(string));
   }
